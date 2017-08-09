@@ -2,7 +2,7 @@ import pyrebase
 import twitter
 
 
-class BotConnector(object):
+class BotBuilder(object):
     db = ""
     twitter_controller = ""
 
@@ -12,10 +12,10 @@ class BotConnector(object):
         self.__connect_to_twitter()
 
     def __connect_to_twitter(self):
-        api = twitter.Api(consumer_key=self.__get_consumer_key(),
-                          consumer_secret=self.__get_consumer_secret(),
-                          access_token_key=self.__get_access_token_key(),
-                          access_token_secret=self.__get_access_token_secret())
+        api = twitter.Api(consumer_key=self.__get_consumer_key__(),
+                          consumer_secret=self.__get_consumer_secret__(),
+                          access_token_key=self.__get_access_token_key__(),
+                          access_token_secret=self.__get_access_token_secret__())
         self.twitter_controller = api
 
     def __connect_to_firebase(self):
@@ -28,20 +28,17 @@ class BotConnector(object):
 
         self.db = pyrebase.initialize_app(config).database()
 
-    def __get_consumer_key(self):
+    def __get_consumer_key__(self):
         return self.db.child("Credentials").child("consumer_key").get().val()
 
-    def __get_consumer_secret(self):
+    def __get_consumer_secret__(self):
         return self.db.child("Credentials").child("consumer_secret").get().val()
 
-    def __get_access_token_key(self):
+    def __get_access_token_key__(self):
         return self.db.child("Credentials").child("access_token_key").get().val()
 
-    def __get_access_token_secret(self):
+    def __get_access_token_secret__(self):
         return self.db.child("Credentials").child("access_token_secret").get().val()
 
     def get_twitter_controller(self):
         return self.twitter_controller
-
-    def get_firebase_db(self):
-        return self.db
