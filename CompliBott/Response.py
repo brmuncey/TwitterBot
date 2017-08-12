@@ -1,6 +1,12 @@
+import random
+
+import enchant
+
+
 class Response(object):
     text = ""
     response = ""
+    dict = enchant.Dict("en_US")
 
     def __init__(self, text):
         print("Building Response")
@@ -14,11 +20,11 @@ class Response(object):
     def __read_text__(self, text):
         if self.__is_word__(text):
             print("Valid Word")
-            #No typos reply respond with a compliment
         else:
             print("Invalid Word")
-            #Acknowledge typo in message.
 
     def __is_word__(self, text):
-        #todo check dictionary for word occurance
-        return False
+        return self.dict.check(text)
+
+    def __get_rand__(self, table):
+        return random.randint(1, len(self.db.child(table).get().val()))

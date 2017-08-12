@@ -1,3 +1,3 @@
 # TwitterBot
-Bot that gives out compliments.
-Tweet greeting @complibott to recieve a compliment.
+Bot that gives out mocks person.
+Tweet greeting @mockbott to recieve a compliment.
