@@ -16,20 +16,15 @@ def __get_old_mentions__():
     return old_mentions
 
 
-def parse_text(text):
-    response = Response(text)
-
-
 def __check_for_new_mention__(mention):
     mentions_json = __get_old_mentions__()
     if mention.id in mentions_json["mentions"]:
-        print("Found")
+        print("Found: Don't Reply")
         return False
     else:
-        print("Not Found")
+        print("Not Found: Reply")
         mentions_json["mentions"].append(mention.id)
         __update_json__(mentions_json)
-        print(mentions_json)
         return True
 
 
@@ -43,7 +38,7 @@ class Bot(object):
         self.connector = BotBuilder()
         self.controller = self.connector.get_twitter_controller()
         self.check_for_mentions()
-        # self.reply_to_messages()
+        self.reply_to_mentions()
 
     def check_for_mentions(self):
         print("Checking for Mentions")
@@ -51,14 +46,11 @@ class Bot(object):
             if __check_for_new_mention__(mention_data):
                 self.mentions.append(Mention(mention_data))
 
-    def reply_to_mentions(self): #todo
-        unique_sender_text = {}
+    def reply_to_mentions(self):
+        print("Replying to Mentions")
         for m in self.mentions:
-            print(m)
-            if unique_sender_text.get(m.sender_screen_name) is None:  # Unique Sender
-                unique_sender_text[m.sender_screen_name] = m.text
-            else:  # Duplicate Sender
-                unique_sender_text[m.sender_screen_name] = m.text + " " + unique_sender_text[m.sender_screen_name]
+            self.__get_response__(m)
 
-        for user in unique_sender_text:
-            parse_text(unique_sender_text[user])
+    def __get_response__(self, text):
+        response = Response(text)
+        self.controller.PostUpdates(response.response)
