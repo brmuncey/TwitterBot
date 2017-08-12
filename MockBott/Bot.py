@@ -1,8 +1,8 @@
 import json
 
-from CompliBott.BotBuilder import BotBuilder
-from CompliBott.Mention import Mention
-from CompliBott.Response import Response
+from MockBott.BotBuilder import BotBuilder
+from MockBott.Mention import Mention
+from MockBott.Response import Response
 
 
 def __update_json__(mentions):
