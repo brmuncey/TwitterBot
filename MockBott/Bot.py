@@ -39,6 +39,7 @@ class Bot(object):
         self.controller = self.connector.get_twitter_controller()
         self.check_for_mentions()
         self.reply_to_mentions()
+        self.__rest__()
 
     def check_for_mentions(self):
         print("Checking for Mentions")
@@ -49,8 +50,18 @@ class Bot(object):
     def reply_to_mentions(self):
         print("Replying to Mentions")
         for m in self.mentions:
-            self.__get_response__(m)
+            self.__generate_response__(m)
 
-    def __get_response__(self, text):
+    def __generate_response__(self, text):
         response = Response(text)
         self.controller.PostUpdates(response.response)
+
+    def __rest__(self):
+        print("Resting")
+        # todo issuse regarding twitter rate limit.
+        # self.__restart__()
+
+    def __restart__(self):
+        self.check_for_mentions()
+        self.reply_to_mentions()
+        self.__rest__()
